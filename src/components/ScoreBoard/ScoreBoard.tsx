@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -7,8 +7,8 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 type ShipStatus = {
   name: string;
@@ -18,23 +18,21 @@ type ShipStatus = {
 };
 
 type ScoreBoardProps = {
-  playerName: string;
   ships: ShipStatus[];
 };
 
-const ScoreBoard: React.FC<ScoreBoardProps> = ({ playerName, ships }) => {
+const ScoreBoard: React.FC<ScoreBoardProps> = ({ ships }) => {
+  const { t } = useTranslation("playLocal");
+
   return (
     <TableContainer component={Paper} style={{ margin: "16px 0" }}>
-      <Typography variant="h6" align="center">
-        {playerName}'s Fleet
-      </Typography>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Ship</TableCell>
-            <TableCell align="center">Size</TableCell>
-            <TableCell align="center">Hits</TableCell>
-            <TableCell align="center">Status</TableCell>
+            <TableCell>{t("ship")}</TableCell>
+            <TableCell align="center">{t("size")}</TableCell>
+            <TableCell align="center">{t("hits")}</TableCell>
+            <TableCell align="center">{t("status")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -44,7 +42,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ playerName, ships }) => {
               <TableCell align="center">{ship.size}</TableCell>
               <TableCell align="center">{ship.hits}</TableCell>
               <TableCell align="center">
-                {ship.sunk ? "Sunk" : "Afloat"}
+                {ship.sunk ? t("sunk") : t("afloat")}
               </TableCell>
             </TableRow>
           ))}

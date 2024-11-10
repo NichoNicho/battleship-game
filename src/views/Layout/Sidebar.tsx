@@ -9,8 +9,6 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     { text: t("playLocal"), route: "/play-local" },
     { text: t("playAI"), route: "/play-ai" },
-    { text: t("playFriend"), route: "/play-friend" },
-    { text: t("scoreboard"), route: "/scoreboard" },
   ];
 
   return (

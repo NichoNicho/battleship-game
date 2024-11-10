@@ -1,5 +1,14 @@
 {
-  "gameTitle": "Battleship Game - Player {{player}}'s Turn",
-  "player1Board": "Player 1's Board",
-  "player2Board": "Player 2's Board"
+  "currentTurn": "Current Turn: Player {{player}}",
+  "playerTurnPrompt": "Player {{player}}, select a cell to fire a shot.",
+  "player1FleetWaters": "Player 1 Fleet & Waters",
+  "player2FleetWaters": "Player 2 Fleet & Waters",
+  "restartGame": "Restart Game",
+  "playerWins": "Player {{player}} Wins!",
+  "ship": "Ship",
+  "size": "Size",
+  "hits": "Hits",
+  "status": "Status",
+  "sunk": "Sunk",
+  "afloat": "Afloat"  
 }

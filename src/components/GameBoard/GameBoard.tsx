@@ -37,7 +37,9 @@ const GameBoard: React.FC<GameBoardProps> = ({
 }) => {
   const handleCellClick = useCallback(
     (row: number, col: number) => {
-      isPlayerTurn ? onFireShot(row, col) : null;
+      if (isPlayerTurn) {
+        onFireShot(row, col);
+      }
     },
     [onFireShot, isPlayerTurn],
   );
@@ -113,9 +115,11 @@ const GameBoard: React.FC<GameBoardProps> = ({
                   rowIndex < ship.row + ship.size,
             );
 
-            const cellColor = occupyingShip
-              ? shipColors[occupyingShip.name]
-              : "#e3f2fd";
+            const cellColor = isHit(rowIndex, colIndex)
+              ? shipColors[occupyingShip?.name || ""]
+              : isMiss(rowIndex, colIndex)
+                ? "grey"
+                : "#e3f2fd";
 
             return (
               <Grid
@@ -129,11 +133,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                   style={{
                     width: CELL_SIZE,
                     height: CELL_SIZE,
-                    backgroundColor: isHit(rowIndex, colIndex)
-                      ? "red"
-                      : isMiss(rowIndex, colIndex)
-                        ? "lightgray"
-                        : cellColor,
+                    backgroundColor: cellColor,
                     border: "1px solid #1976d2",
                     cursor: isPlayerTurn ? "pointer" : "default",
                   }}
