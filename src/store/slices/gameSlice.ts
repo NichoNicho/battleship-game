@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "$store/index";
 
 export type Ship = {
   name: string;
@@ -68,6 +69,9 @@ const gameSlice = createSlice({
     },
   },
 });
+
+export const selectShipStatuses = (state: RootState, player: 1 | 2) =>
+  player === 1 ? state.game.player1Ships : state.game.player2Ships;
 
 export const { setPlayerShips, fireShot } = gameSlice.actions;
 export default gameSlice.reducer;

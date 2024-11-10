@@ -8,7 +8,28 @@ import AppLoader from "./AppLoader";
 import AppRoutes from "./AppRoutes";
 import "./i18n";
 
-const theme = createTheme({});
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+    background: {
+      default: "#121212",
+      paper: "#1e1e1e",
+    },
+    primary: {
+      main: "#90caf9",
+    },
+    secondary: {
+      main: "#f48fb1",
+    },
+    text: {
+      primary: "#ffffff",
+      secondary: "#b0bec5",
+    },
+  },
+  typography: {
+    fontFamily: "Roboto, sans-serif",
+  },
+});
 
 const App: React.FC = () => (
   <ReduxProvider store={store}>
