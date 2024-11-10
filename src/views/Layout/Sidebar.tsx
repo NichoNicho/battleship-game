@@ -7,7 +7,7 @@ const Sidebar: React.FC = () => {
   const { t } = useTranslation("sidebar");
 
   const menuItems = [
-    { text: t("playLocal"), route: "/play-local" },
+    { text: t("playLocal"), route: "/" },
     { text: t("playAI"), route: "/play-ai" },
   ];
 
@@ -15,7 +15,21 @@ const Sidebar: React.FC = () => {
     <Drawer variant="permanent" anchor="left">
       <List>
         {menuItems.map((item, index) => (
-          <ListItem button key={index} component={NavLink} to={item.route}>
+          <ListItem
+            key={index}
+            component={NavLink}
+            to={item.route}
+            sx={{
+              color: "white",
+              "&.active": {
+                backgroundColor: "#1976d2",
+                color: "#fff",
+              },
+              textDecoration: "none",
+              width: "100%",
+              padding: "8px 16px",
+            }}
+          >
             <ListItemText primary={item.text} />
           </ListItem>
         ))}
