@@ -1,0 +1,34 @@
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { resolve } from "path";
+
+const projectRootDir = resolve(__dirname, "src");
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,
+  },
+  resolve: {
+    alias: [
+      { find: "$assets", replacement: resolve(projectRootDir, "assets") },
+      {
+        find: "$components",
+        replacement: resolve(projectRootDir, "components"),
+      },
+      { find: "$constants", replacement: resolve(projectRootDir, "constants") },
+      { find: "$hooks", replacement: resolve(projectRootDir, "hooks") },
+      { find: "$routes", replacement: resolve(projectRootDir, "routes") },
+      { find: "$store", replacement: resolve(projectRootDir, "store") },
+      { find: "$types", replacement: resolve(projectRootDir, "types") },
+      { find: "$utils", replacement: resolve(projectRootDir, "utils") },
+      { find: "$views", replacement: resolve(projectRootDir, "views") },
+    ],
+    dedupe: ["@mui/material", "@emotion/react"],
+  },
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+    emptyOutDir: true,
+  },
+});

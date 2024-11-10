@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.eslintrc.js
+vite.config.ts
+jest.config.js
+jest.setup.js
+__mocks__/fileMock.js
+babel.config.js
+!**/.env-cmdrc.js
+.env-cmdrc.js
+jestResolver.js
+scripts/
