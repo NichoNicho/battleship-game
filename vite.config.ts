@@ -18,8 +18,6 @@ export default defineConfig({
       },
       { find: "$constants", replacement: resolve(projectRootDir, "constants") },
       { find: "$hooks", replacement: resolve(projectRootDir, "hooks") },
-      { find: "$routes", replacement: resolve(projectRootDir, "routes") },
-      { find: "$store", replacement: resolve(projectRootDir, "store") },
       { find: "$types", replacement: resolve(projectRootDir, "types") },
       { find: "$utils", replacement: resolve(projectRootDir, "utils") },
       { find: "$views", replacement: resolve(projectRootDir, "views") },

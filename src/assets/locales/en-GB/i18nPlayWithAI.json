@@ -1,4 +1,8 @@
 {
-  "title": "Play Against AI",
-  "description": "Challenge an AI opponent and test your skills."
+  "aiWins": "AI Wins!",
+  "playerWins": "Player Wins!",
+  "currentTurn": "Current Turn: {{player}}",
+  "aiFleet": "AI Fleet & Waters",
+  "playerFleet": "Player Fleet & Waters",
+  "fireInstruction": "Fire at the opponent's board!"
 }
