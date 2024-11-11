@@ -1,21 +1,12 @@
 import React, { useCallback } from "react";
 import { Grid, Paper, Typography } from "@mui/material";
+import { Ship } from "$types/Ship";
 
 const BOARD_SIZE = 10;
 const ROW_LABELS = "ABCDEFGHIJ".split("");
 const COLUMN_LABELS = Array.from({ length: BOARD_SIZE }, (_, i) =>
   (i + 1).toString(),
 );
-
-type Ship = {
-  name: string;
-  size: number;
-  isHorizontal: boolean;
-  row: number;
-  col: number;
-  hits: number;
-  sunk: boolean;
-};
 
 type GameBoardProps = {
   placedShips: Ship[];

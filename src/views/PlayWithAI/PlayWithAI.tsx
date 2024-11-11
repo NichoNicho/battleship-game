@@ -49,10 +49,10 @@ const PlayWithAI: React.FC = () => {
             {t("aiFleet")}
           </Button>
           <Grid container spacing={2} mt={1}>
-            <Grid item xs={4} mt={3}>
+            <Grid item xs={5} mt={3}>
               <ScoreBoard ships={aiShips} />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <GameBoard
                 placedShips={aiShips}
                 shipColors={shipColors}
@@ -70,7 +70,7 @@ const PlayWithAI: React.FC = () => {
             {t("playerFleet")}
           </Button>
           <Grid container spacing={2} mt={1}>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <GameBoard
                 placedShips={playerShips}
                 shipColors={shipColors}
@@ -79,7 +79,7 @@ const PlayWithAI: React.FC = () => {
                 isPlayerTurn={false}
               />
             </Grid>
-            <Grid item xs={4} mt={3}>
+            <Grid item xs={5} mt={3}>
               <ScoreBoard ships={playerShips} />
             </Grid>
           </Grid>

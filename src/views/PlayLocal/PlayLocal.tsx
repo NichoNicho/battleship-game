@@ -48,10 +48,10 @@ const PlayLocal: React.FC = () => {
             {t("player2FleetWaters")}
           </Button>
           <Grid container spacing={2} mt={1}>
-            <Grid item xs={4} mt={3}>
+            <Grid item xs={5} mt={3}>
               <ScoreBoard ships={player2Ships} />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <GameBoard
                 placedShips={player2Ships}
                 shipColors={shipColors}
@@ -70,7 +70,7 @@ const PlayLocal: React.FC = () => {
             {t("player1FleetWaters")}
           </Button>
           <Grid container spacing={2} mt={1}>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <GameBoard
                 placedShips={player1Ships}
                 shipColors={shipColors}
@@ -81,7 +81,7 @@ const PlayLocal: React.FC = () => {
                 isPlayerTurn={currentPlayer === 2}
               />
             </Grid>
-            <Grid item xs={4} mt={3}>
+            <Grid item xs={5} mt={3}>
               <ScoreBoard ships={player1Ships} />
             </Grid>
           </Grid>

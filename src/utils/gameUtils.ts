@@ -151,12 +151,10 @@ export const getNextAIMove = (
   aiShots: { row: number; col: number }[],
   targetStack: { row: number; col: number }[],
 ): { row: number; col: number } => {
-  // If there are cells in the target stack, pop and return the next target.
   if (targetStack.length > 0) {
     return targetStack.pop()!;
   }
 
-  // Otherwise, pick a random cell that hasn't been shot yet.
   const unshotCells = [];
   for (let row = 0; row < BOARD_SIZE; row++) {
     for (let col = 0; col < BOARD_SIZE; col++) {
@@ -166,6 +164,5 @@ export const getNextAIMove = (
     }
   }
 
-  // Select a random cell from available unshot cells.
   return unshotCells[Math.floor(Math.random() * unshotCells.length)];
 };
