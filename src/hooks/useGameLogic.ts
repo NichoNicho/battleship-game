@@ -1,50 +1,28 @@
-import { useState, useCallback } from "react";
-import { Ship } from "$types/Ship";
-import { randomizeShips } from "$utils/gameUtils";
+import { useAppDispatch, useAppSelector } from "$store";
+import { fireShot, resetGame } from "$slices/gameSlice";
 
 export const useGameLogic = () => {
-  const [player1Ships, setPlayer1Ships] = useState<Ship[]>(randomizeShips());
-  const [player2Ships, setPlayer2Ships] = useState<Ship[]>(randomizeShips());
-  const [player1Shots, setPlayer1Shots] = useState<
-    { row: number; col: number }[]
-  >([]);
-  const [player2Shots, setPlayer2Shots] = useState<
-    { row: number; col: number }[]
-  >([]);
-  const [currentPlayer, setCurrentPlayer] = useState(1);
-  const [winner, setWinner] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const localGame = useAppSelector((state) => state.game.localGame);
 
-  const resetGame = useCallback(() => {
-    setPlayer1Ships(randomizeShips());
-    setPlayer2Ships(randomizeShips());
-    setPlayer1Shots([]);
-    setPlayer2Shots([]);
-    setCurrentPlayer(1);
-    setWinner(null);
-  }, []);
+  console.log("useGameLogic LocalGame State:", localGame);
 
-  const checkWinCondition = useCallback(
-    (ships: Ship[], player: "Player 1" | "Player 2") => {
-      if (ships.every((ship) => ship.sunk)) {
-        setWinner(`${player} Wins!`);
-      }
-    },
-    [],
-  );
+  const fireShotHandler = (row: number, col: number) => {
+    dispatch(fireShot({ mode: "localGame", row, col, boardSize: 10 }));
+  };
+
+  const resetGameHandler = () => {
+    dispatch(resetGame({ mode: "localGame" }));
+  };
 
   return {
-    player1Ships,
-    player2Ships,
-    player1Shots,
-    player2Shots,
-    currentPlayer,
-    winner,
-    setPlayer1Ships,
-    setPlayer2Ships,
-    setPlayer1Shots,
-    setPlayer2Shots,
-    setCurrentPlayer,
-    checkWinCondition,
-    resetGame,
+    player1Shots: localGame.shotsByPlayer[0],
+    player2Shots: localGame.shotsByPlayer[1],
+    player1Ships: localGame.shipsByPlayer[0],
+    player2Ships: localGame.shipsByPlayer[1],
+    currentPlayer: localGame.currentPlayer,
+    winner: localGame.winner,
+    fireShot: fireShotHandler,
+    resetGame: resetGameHandler,
   };
 };

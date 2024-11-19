@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Grid, Paper, Typography } from "@mui/material";
 import { Ship } from "$types/Ship";
+import { isHit } from "$utils/shipUtils";
 
 const BOARD_SIZE = 10;
 const ROW_LABELS = "ABCDEFGHIJ".split("");
@@ -11,7 +12,7 @@ const COLUMN_LABELS = Array.from({ length: BOARD_SIZE }, (_, i) =>
 type GameBoardProps = {
   placedShips: Ship[];
   shipColors: Record<string, string>;
-  shots: { row: number; col: number }[];
+  shots: Set<string>;
   onFireShot: (row: number, col: number) => void;
   isPlayerTurn: boolean;
 };
@@ -26,6 +27,9 @@ const GameBoard: React.FC<GameBoardProps> = ({
   onFireShot,
   isPlayerTurn,
 }) => {
+  useEffect(() => {
+    console.log("GameBoard Props:", { placedShips, shots, isPlayerTurn });
+  }, [placedShips, shots, isPlayerTurn]);
   const handleCellClick = useCallback(
     (row: number, col: number) => {
       if (isPlayerTurn) {
@@ -34,18 +38,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
     },
     [onFireShot, isPlayerTurn],
   );
-
-  const isHit = (row: number, col: number) =>
-    shots.some((shot) => shot.row === row && shot.col === col) &&
-    placedShips.some((ship) =>
-      ship.isHorizontal
-        ? row === ship.row && col >= ship.col && col < ship.col + ship.size
-        : col === ship.col && row >= ship.row && row < ship.row + ship.size,
-    );
-
-  const isMiss = (row: number, col: number) =>
-    shots.some((shot) => shot.row === row && shot.col === col) &&
-    !isHit(row, col);
 
   return (
     <Grid
@@ -96,21 +88,23 @@ const GameBoard: React.FC<GameBoardProps> = ({
             </Typography>
           </Grid>
           {Array.from({ length: BOARD_SIZE }).map((_, colIndex) => {
-            const occupyingShip = placedShips.find((ship) =>
-              ship.isHorizontal
-                ? ship.row === rowIndex &&
-                  colIndex >= ship.col &&
-                  colIndex < ship.col + ship.size
-                : ship.col === colIndex &&
-                  rowIndex >= ship.row &&
-                  rowIndex < ship.row + ship.size,
-            );
+            const cellColor = (() => {
+              if (
+                Array.from(shots).some(
+                  (shot) => shot === `${rowIndex}-${colIndex}`,
+                )
+              ) {
+                const occupyingShip = placedShips.find((ship) =>
+                  isHit(rowIndex, colIndex, ship),
+                );
+                return occupyingShip
+                  ? shipColors[occupyingShip.name || "default"]
+                  : "grey";
+              }
+              return "#e3f2fd";
+            })();
 
-            const cellColor = isHit(rowIndex, colIndex)
-              ? shipColors[occupyingShip?.name || ""]
-              : isMiss(rowIndex, colIndex)
-                ? "grey"
-                : "#e3f2fd";
+            //console.log(`Cell [${rowIndex}-${colIndex}] color:`, cellColor); // Debug log
 
             return (
               <Grid
@@ -118,6 +112,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 xs={1}
                 key={`cell-${rowIndex}-${colIndex}`}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
+                data-testid={`cell-${rowIndex}-${colIndex}`}
               >
                 <Paper
                   elevation={1}

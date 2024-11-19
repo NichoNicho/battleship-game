@@ -36,13 +36,13 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ ships }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {ships.map((ship) => (
-            <TableRow key={ship.name}>
-              <TableCell>{ship.name}</TableCell>
-              <TableCell align="center">{ship.size}</TableCell>
-              <TableCell align="center">{ship.hits}</TableCell>
+          {ships.map(({ name, size, hits, sunk }) => (
+            <TableRow key={name}>
+              <TableCell>{name}</TableCell>
+              <TableCell align="center">{size}</TableCell>
+              <TableCell align="center">{hits}</TableCell>
               <TableCell align="center">
-                {ship.sunk ? t("sunk") : t("afloat")}
+                {sunk ? t("sunk") : t("afloat")}
               </TableCell>
             </TableRow>
           ))}

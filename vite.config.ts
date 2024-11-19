@@ -17,6 +17,8 @@ export default defineConfig({
         replacement: resolve(projectRootDir, "components"),
       },
       { find: "$constants", replacement: resolve(projectRootDir, "constants") },
+      { find: "$slices", replacement: resolve(projectRootDir, "store/slices") },
+      { find: "$store", replacement: resolve(__dirname, "src/store") },
       { find: "$hooks", replacement: resolve(projectRootDir, "hooks") },
       { find: "$types", replacement: resolve(projectRootDir, "types") },
       { find: "$utils", replacement: resolve(projectRootDir, "utils") },

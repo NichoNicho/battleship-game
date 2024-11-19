@@ -1,15 +1,30 @@
 import React from "react";
 import { Drawer, List, ListItem, ListItemText } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAppDispatch } from "$store";
+import { resetGame } from "$slices/gameSlice";
 
 const Sidebar: React.FC = () => {
   const { t } = useTranslation("sidebar");
+  const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const menuItems = [
-    { text: t("playLocal"), route: "/" },
-    { text: t("playAI"), route: "/play-ai" },
+    { text: t("playLocal"), route: "/", mode: "localGame" as const },
+    { text: t("playAI"), route: "/play-ai", mode: "aiGame" as const },
   ];
+
+  const resetHandler = (mode: "localGame" | "aiGame", route: string) => {
+    if (location.pathname !== route) {
+      if (mode === "localGame") {
+        dispatch(resetGame({ mode: "aiGame" }));
+      } else {
+        dispatch(resetGame({ mode: "localGame" }));
+      }
+      dispatch(resetGame({ mode }));
+    }
+  };
 
   return (
     <Drawer variant="permanent" anchor="left">
@@ -29,6 +44,7 @@ const Sidebar: React.FC = () => {
               width: "100%",
               padding: "8px 16px",
             }}
+            onClick={() => resetHandler(item.mode, item.route)}
           >
             <ListItemText primary={item.text} />
           </ListItem>
