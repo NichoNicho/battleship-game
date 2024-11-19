@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { Grid, Paper, Typography } from "@mui/material";
 import { Ship } from "$types/Ship";
 import { isHit } from "$utils/shipUtils";
@@ -27,9 +27,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
   onFireShot,
   isPlayerTurn,
 }) => {
-  useEffect(() => {
-    console.log("GameBoard Props:", { placedShips, shots, isPlayerTurn });
-  }, [placedShips, shots, isPlayerTurn]);
   const handleCellClick = useCallback(
     (row: number, col: number) => {
       if (isPlayerTurn) {
@@ -103,8 +100,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
               }
               return "#e3f2fd";
             })();
-
-            //console.log(`Cell [${rowIndex}-${colIndex}] color:`, cellColor); // Debug log
 
             return (
               <Grid

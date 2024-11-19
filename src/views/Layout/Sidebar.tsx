@@ -1,29 +1,25 @@
 import React from "react";
 import { Drawer, List, ListItem, ListItemText } from "@mui/material";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "$store";
-import { resetGame } from "$slices/gameSlice";
+import { resetLocalGame } from "$slices/localGameSlice";
+import { resetAIGame } from "$slices/aiGameSlice";
 
 const Sidebar: React.FC = () => {
   const { t } = useTranslation("sidebar");
   const dispatch = useAppDispatch();
-  const location = useLocation();
+  const navigate = useNavigate();
 
   const menuItems = [
-    { text: t("playLocal"), route: "/", mode: "localGame" as const },
-    { text: t("playAI"), route: "/play-ai", mode: "aiGame" as const },
+    { text: t("playLocal"), route: "/", resetAction: resetLocalGame },
+    { text: t("playAI"), route: "/play-ai", resetAction: resetAIGame },
   ];
 
-  const resetHandler = (mode: "localGame" | "aiGame", route: string) => {
-    if (location.pathname !== route) {
-      if (mode === "localGame") {
-        dispatch(resetGame({ mode: "aiGame" }));
-      } else {
-        dispatch(resetGame({ mode: "localGame" }));
-      }
-      dispatch(resetGame({ mode }));
-    }
+  const handleResetAndNavigate = (route: string) => {
+    dispatch(resetLocalGame());
+    dispatch(resetAIGame());
+    navigate(route);
   };
 
   return (
@@ -44,7 +40,7 @@ const Sidebar: React.FC = () => {
               width: "100%",
               padding: "8px 16px",
             }}
-            onClick={() => resetHandler(item.mode, item.route)}
+            onClick={() => handleResetAndNavigate(item.route)}
           >
             <ListItemText primary={item.text} />
           </ListItem>

@@ -1,27 +1,26 @@
 import { useAppDispatch, useAppSelector } from "$store";
-import { fireShot, resetGame } from "$slices/gameSlice";
+import { fireShotLocal, resetLocalGame } from "$slices/localGameSlice";
 
 export const useGameLogic = () => {
   const dispatch = useAppDispatch();
-  const localGame = useAppSelector((state) => state.game.localGame);
-
-  console.log("useGameLogic LocalGame State:", localGame);
+  const { shotsByPlayer, shipsByPlayer, currentPlayer, winner } =
+    useAppSelector((state) => state.localGame);
 
   const fireShotHandler = (row: number, col: number) => {
-    dispatch(fireShot({ mode: "localGame", row, col, boardSize: 10 }));
+    dispatch(fireShotLocal({ row, col, boardSize: 10 }));
   };
 
   const resetGameHandler = () => {
-    dispatch(resetGame({ mode: "localGame" }));
+    dispatch(resetLocalGame());
   };
 
   return {
-    player1Shots: localGame.shotsByPlayer[0],
-    player2Shots: localGame.shotsByPlayer[1],
-    player1Ships: localGame.shipsByPlayer[0],
-    player2Ships: localGame.shipsByPlayer[1],
-    currentPlayer: localGame.currentPlayer,
-    winner: localGame.winner,
+    player1Shots: shotsByPlayer[0],
+    player2Shots: shotsByPlayer[1],
+    player1Ships: shipsByPlayer[0],
+    player2Ships: shipsByPlayer[1],
+    currentPlayer,
+    winner,
     fireShot: fireShotHandler,
     resetGame: resetGameHandler,
   };

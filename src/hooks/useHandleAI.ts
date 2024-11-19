@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 export const useHandleAI = () => {
   const dispatch = useAppDispatch();
-  const aiGame = useAppSelector((state) => state.game.aiGame);
+  const aiGame = useAppSelector((state) => state.aiGame);
 
   console.log("useHandleAI AIGame State:", aiGame);
 
