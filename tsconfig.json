@@ -15,16 +15,20 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "$assets/*": ["./assets/*"],
-      "$components/*": ["./components/*"],
-      "$constants/*": ["./constants/*"],
-      "$hooks/*": ["./hooks/*"],
-      "$types/*": ["./types/*"],
-      "$utils/*": ["./utils/*"],
-      "$views/*": ["./views/*"]
+      "$assets/*": ["src/assets/*"],
+      "$components/*": ["src/components/*"],
+      "$constants/*": ["src/constants/*"],
+      "$domain/*": ["src/domain/*"],  
+      "$hooks/*": ["src/hooks/*"],
+      "$slices/*": ["src/store/slices/*"],
+      "$store/*": ["src/store/*"],
+      "$store": ["src/store"],
+      "$types/*": ["src/types/*"],
+      "$utils/*": ["src/utils/*"],
+      "$views/*": ["src/views/*"]
     }
   },
-   "include": ["src", "*.ts"]
+  "include": ["src", "test", "*.ts", "jest.config.js"]
 }

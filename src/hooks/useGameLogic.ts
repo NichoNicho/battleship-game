@@ -1,50 +1,27 @@
-import { useState, useCallback } from "react";
-import { Ship } from "$types/Ship";
-import { randomizeShips } from "$utils/gameUtils";
+import { useAppDispatch, useAppSelector } from "$store";
+import { fireShotLocal, resetLocalGame } from "$slices/localGameSlice";
 
 export const useGameLogic = () => {
-  const [player1Ships, setPlayer1Ships] = useState<Ship[]>(randomizeShips());
-  const [player2Ships, setPlayer2Ships] = useState<Ship[]>(randomizeShips());
-  const [player1Shots, setPlayer1Shots] = useState<
-    { row: number; col: number }[]
-  >([]);
-  const [player2Shots, setPlayer2Shots] = useState<
-    { row: number; col: number }[]
-  >([]);
-  const [currentPlayer, setCurrentPlayer] = useState(1);
-  const [winner, setWinner] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { shotsByPlayer, shipsByPlayer, currentPlayer, winner } =
+    useAppSelector((state) => state.localGame);
 
-  const resetGame = useCallback(() => {
-    setPlayer1Ships(randomizeShips());
-    setPlayer2Ships(randomizeShips());
-    setPlayer1Shots([]);
-    setPlayer2Shots([]);
-    setCurrentPlayer(1);
-    setWinner(null);
-  }, []);
+  const fireShotHandler = (row: number, col: number) => {
+    dispatch(fireShotLocal({ row, col, boardSize: 10 }));
+  };
 
-  const checkWinCondition = useCallback(
-    (ships: Ship[], player: "Player 1" | "Player 2") => {
-      if (ships.every((ship) => ship.sunk)) {
-        setWinner(`${player} Wins!`);
-      }
-    },
-    [],
-  );
+  const resetGameHandler = () => {
+    dispatch(resetLocalGame());
+  };
 
   return {
-    player1Ships,
-    player2Ships,
-    player1Shots,
-    player2Shots,
+    player1Shots: shotsByPlayer[0],
+    player2Shots: shotsByPlayer[1],
+    player1Ships: shipsByPlayer[0],
+    player2Ships: shipsByPlayer[1],
     currentPlayer,
     winner,
-    setPlayer1Ships,
-    setPlayer2Ships,
-    setPlayer1Shots,
-    setPlayer2Shots,
-    setCurrentPlayer,
-    checkWinCondition,
-    resetGame,
+    fireShot: fireShotHandler,
+    resetGame: resetGameHandler,
   };
 };

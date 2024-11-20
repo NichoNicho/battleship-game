@@ -1,0 +1,20 @@
+module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "jest-environment-jsdom",
+  moduleNameMapper: {
+    "^\\$assets/(.*)$": "<rootDir>/src/assets/$1",
+    "^\\$components/(.*)$": "<rootDir>/src/components/$1",
+    "^\\$domain/(.*)$": "<rootDir>/src/domain/$1",
+    "^\\$constants/(.*)$": "<rootDir>/src/constants/$1",
+    "^\\$hooks/(.*)$": "<rootDir>/src/hooks/$1",
+    "^\\$store/(.*)$": "<rootDir>/src/store/$1",
+    "^\\$store$": "<rootDir>/src/store",
+    "^\\$slices/(.*)$": "<rootDir>/src/store/slices/$1",
+    "^\\$types/(.*)$": "<rootDir>/src/types/$1",
+    "^\\$utils/(.*)$": "<rootDir>/src/utils/$1",
+    "^\\$views/(.*)$": "<rootDir>/src/views/$1",
+  },
+  testMatch: ["<rootDir>/test/**/*.test.ts?(x)"],
+  modulePaths: ["<rootDir>/src"],
+  setupFilesAfterEnv: ["<rootDir>/jest-setup.ts"],
+};

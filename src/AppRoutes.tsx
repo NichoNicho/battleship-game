@@ -4,8 +4,8 @@ import PlayLocal from "$views/PlayLocal";
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<PlayLocal />} />
-    <Route path="/play-ai" element={<PlayWithtAI />} />
+    <Route path="/" element={<PlayLocal key="play-local" />} />
+    <Route path="/play-ai" element={<PlayWithtAI key="play-ai" />} />
     <Route path="*" element={<Navigate to="/" />} />
   </Routes>
 );
