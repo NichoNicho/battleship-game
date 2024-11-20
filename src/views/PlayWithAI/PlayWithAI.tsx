@@ -1,25 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid, Typography, Paper, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import GameBoard from "$components/GameBoard";
 import ScoreBoard from "$components/ScoreBoard";
 import { shipColors } from "$constants/gameConstants";
-import { useGameLogic } from "$hooks/useGameLogic";
+import { useHandleAI } from "$hooks/useHandleAI";
+import { transformToShipStatuses } from "$domain/ships";
 import { Ship } from "$types/Ship";
-import { transformToShipStatuses } from "$utils/shipUtils";
 
 const PlayWithAI: React.FC = () => {
   const { t } = useTranslation("playWithAI");
   const {
-    player1Ships: playerShips,
-    player2Ships: aiShips,
-    player1Shots: playerShots,
-    player2Shots: aiShots,
+    playerShips,
+    aiShips,
+    playerShots,
+    aiShots,
     currentPlayer,
     winner,
-    fireShot,
+    handleShot,
     resetGame,
-  } = useGameLogic();
+  } = useHandleAI();
+
+  useEffect(() => {
+    if (currentPlayer === 2 && !winner) {
+      handleShot(-1, -1);
+    }
+  }, [currentPlayer, winner, handleShot]);
 
   const renderGameBoard = (
     playerShips: Ship[],
@@ -33,11 +39,6 @@ const PlayWithAI: React.FC = () => {
         {label}
       </Button>
       <Grid container spacing={2} mt={1}>
-        <Grid item xs={5} mt={3}>
-          <ScoreBoard
-            ships={transformToShipStatuses(playerShips, opponentShots)}
-          />
-        </Grid>
         <Grid item xs={7}>
           <GameBoard
             key={`ai-${label}`}
@@ -46,6 +47,11 @@ const PlayWithAI: React.FC = () => {
             shots={new Set(opponentShots)}
             onFireShot={onFireShot}
             isPlayerTurn={isPlayerTurn}
+          />
+        </Grid>
+        <Grid item xs={5} mt={3}>
+          <ScoreBoard
+            ships={transformToShipStatuses(playerShips, opponentShots)}
           />
         </Grid>
       </Grid>
@@ -81,7 +87,7 @@ const PlayWithAI: React.FC = () => {
           aiShips,
           playerShots,
           currentPlayer === 1,
-          (row, col) => currentPlayer === 1 && fireShot(row, col),
+          (row, col) => currentPlayer === 1 && handleShot(row, col),
           t("aiFleet"),
         )}
         {renderGameBoard(

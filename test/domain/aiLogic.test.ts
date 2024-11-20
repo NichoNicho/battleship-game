@@ -1,6 +1,6 @@
-import { getNextAIMove, addSurroundingCellsToStack } from "$utils/aiUtils";
+import { getNextAIMove, addSurroundingCellsToStack } from "$domain/aiLogic";
 
-describe("aiUtils", () => {
+describe("aiLogic", () => {
   it("getNextAIMove selects the next target from the stack", () => {
     const targetStack = [{ row: 3, col: 4 }];
     const aiShots = new Set<string>();

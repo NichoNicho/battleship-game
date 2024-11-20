@@ -1,10 +1,6 @@
-import {
-  initializeBoard,
-  placeShipOnBoard,
-  canPlaceShip,
-} from "$utils/boardUtils";
+import { initializeBoard, placeShipOnBoard, canPlaceShip } from "$domain/board";
 
-describe("boardUtils", () => {
+describe("board", () => {
   const BOARD_SIZE = 10;
 
   it("initializeBoard creates an empty board of the correct size", () => {

@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Ship } from "$types/Ship";
-import { randomizeShipsOnBoard } from "$utils/boardUtils";
-import { initialShips, BOARD_SIZE } from "$constants/gameConstants";
+import {
+  randomizeGameShips,
+  isValidShot,
+  checkWinner,
+} from "$domain/gameLogic";
+import { BOARD_SIZE, initialShips } from "$constants/gameConstants";
 
 type LocalGameState = {
   shotsByPlayer: [string[], string[]];
@@ -10,30 +14,17 @@ type LocalGameState = {
   winner: string | null;
 };
 
-const randomizeGameShips = () => {
-  const { placedShips: player1Ships } = randomizeShipsOnBoard(
-    BOARD_SIZE,
-    initialShips,
-  );
-  const { placedShips: player2Ships } = randomizeShipsOnBoard(
-    BOARD_SIZE,
-    initialShips,
-  );
-  return { player1Ships, player2Ships };
-};
+const { player1Ships, player2Ships } = randomizeGameShips(
+  BOARD_SIZE,
+  initialShips,
+);
 
 const initialState: LocalGameState = {
   shotsByPlayer: [[], []],
-  shipsByPlayer: [
-    randomizeShipsOnBoard(BOARD_SIZE, initialShips).placedShips,
-    randomizeShipsOnBoard(BOARD_SIZE, initialShips).placedShips,
-  ],
+  shipsByPlayer: [player1Ships, player2Ships],
   currentPlayer: 1,
   winner: null,
 };
-
-const isValidShot = (row: number, col: number, boardSize: number): boolean =>
-  row >= 0 && col >= 0 && row < boardSize && col < boardSize;
 
 const localGameSlice = createSlice({
   name: "localGame",
@@ -56,9 +47,15 @@ const localGameSlice = createSlice({
       }
 
       currentShots.push(`${row}-${col}`);
+
+      const opponentShips = state.shipsByPlayer[state.currentPlayer % 2];
+      if (checkWinner(currentShots, opponentShips)) {
+        state.winner = `Player ${state.currentPlayer}`;
+        return;
+      }
+
       state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
 
-      const opponentShips = state.shipsByPlayer[state.currentPlayer - 1];
       opponentShips.forEach((ship) => {
         for (let i = 0; i < ship.size; i++) {
           const cellKey = ship.isHorizontal
@@ -74,9 +71,12 @@ const localGameSlice = createSlice({
       });
     },
     resetGame(state) {
-      const newShips = randomizeGameShips();
+      const { player1Ships, player2Ships } = randomizeGameShips(
+        BOARD_SIZE,
+        initialShips,
+      );
       state.shotsByPlayer = [[], []];
-      state.shipsByPlayer = [newShips.player1Ships, newShips.player2Ships];
+      state.shipsByPlayer = [player1Ships, player2Ships];
       state.currentPlayer = 1;
       state.winner = null;
     },

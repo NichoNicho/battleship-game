@@ -25,7 +25,7 @@ jobs:
       run: npm run lint
 
     - name: Test Application
-      run: "echo no test yet"
+      run: npm run test
 
     - name: Build Application
       run: npm run build

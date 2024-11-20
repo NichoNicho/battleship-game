@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Ship } from "$types/Ship";
-import { randomizeShipsOnBoard } from "$utils/boardUtils";
-import { initialShips, BOARD_SIZE } from "$constants/gameConstants";
+import {
+  randomizeGameShips,
+  isValidShot,
+  checkWinner,
+} from "$domain/gameLogic";
+import { BOARD_SIZE, initialShips } from "$constants/gameConstants";
 
 type AIGameState = {
   playerShots: string[];
@@ -12,29 +16,19 @@ type AIGameState = {
   winner: string | null;
 };
 
-const randomizeGameShips = () => {
-  const { placedShips: player1Ships } = randomizeShipsOnBoard(
-    BOARD_SIZE,
-    initialShips,
-  );
-  const { placedShips: player2Ships } = randomizeShipsOnBoard(
-    BOARD_SIZE,
-    initialShips,
-  );
-  return { player1Ships, player2Ships };
-};
+const { player1Ships, player2Ships } = randomizeGameShips(
+  BOARD_SIZE,
+  initialShips,
+);
 
 const initialState: AIGameState = {
   playerShots: [],
   aiShots: [],
-  playerShips: randomizeShipsOnBoard(BOARD_SIZE, initialShips).placedShips,
-  aiShips: randomizeShipsOnBoard(BOARD_SIZE, initialShips).placedShips,
+  playerShips: player1Ships,
+  aiShips: player2Ships,
   currentPlayer: 1,
   winner: null,
 };
-
-const isValidShot = (row: number, col: number, boardSize: number): boolean =>
-  row >= 0 && col >= 0 && row < boardSize && col < boardSize;
 
 const aiGameSlice = createSlice({
   name: "aiGame",
@@ -47,44 +41,49 @@ const aiGameSlice = createSlice({
       const { row, col, boardSize } = action.payload;
       const currentShots =
         state.currentPlayer === 1 ? state.playerShots : state.aiShots;
-    
+
       if (
-        state.winner || // Prevent shots after game ends
-        !isValidShot(row, col, boardSize) || // Prevent invalid shots
-        currentShots.includes(`${row}-${col}`) // Prevent duplicate shots
+        state.winner ||
+        !isValidShot(row, col, boardSize) ||
+        currentShots.includes(`${row}-${col}`)
       ) {
         return;
       }
-    
+
       currentShots.push(`${row}-${col}`);
-    
-      // Check for winner
+
       const opponentShips =
         state.currentPlayer === 1 ? state.aiShips : state.playerShips;
-      const allCoordinates = opponentShips.flatMap((ship) =>
-        Array.from({ length: ship.size }).map((_, i) => {
-          const row = ship.isHorizontal ? ship.row : ship.row + i;
-          const col = ship.isHorizontal ? ship.col + i : ship.col;
-          return `${row}-${col}`;
-        }),
-      );
-    
-      const allHits = new Set(currentShots);
-      if (allCoordinates.every((coord) => allHits.has(coord))) {
+      if (checkWinner(currentShots, opponentShips)) {
         state.winner = state.currentPlayer === 1 ? "Player" : "AI";
         return;
       }
-    
-      // Toggle turn
+
       state.currentPlayer = state.currentPlayer === 1 ? 2 : 1;
+
+      opponentShips.forEach((ship) => {
+        for (let i = 0; i < ship.size; i++) {
+          const cellKey = ship.isHorizontal
+            ? `${ship.row}-${ship.col + i}`
+            : `${ship.row + i}-${ship.col}`;
+          if (cellKey === `${row}-${col}`) {
+            ship.hits += 1;
+            if (ship.hits === ship.size) {
+              ship.sunk = true;
+            }
+          }
+        }
+      });
     },
-    
     resetGame(state) {
-      const newShips = randomizeGameShips();
+      const { player1Ships, player2Ships } = randomizeGameShips(
+        BOARD_SIZE,
+        initialShips,
+      );
       state.playerShots = [];
       state.aiShots = [];
-      state.playerShips = newShips.player1Ships;
-      state.aiShips = newShips.player2Ships;
+      state.playerShips = player1Ships;
+      state.aiShips = player2Ships;
       state.currentPlayer = 1;
       state.winner = null;
     },

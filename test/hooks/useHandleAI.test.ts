@@ -2,7 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 import { useHandleAI } from "$hooks/useHandleAI";
 import TestWrapper from "../utils/testWrapper";
 
-jest.mock("$utils/aiUtils", () => ({
+jest.mock("$domain/aiLogic", () => ({
   getNextAIMove: jest.fn(() => ({ row: 0, col: 0 })),
   addSurroundingCellsToStack: jest.fn((stack) => stack),
 }));
@@ -27,12 +27,11 @@ describe("useHandleAI", () => {
     });
 
     act(() => {
-      // Simulate AI turn
       result.current.handleShot(0, 0);
     });
 
     expect(result.current).toBeDefined();
-    expect(result.current.currentPlayer).toBe(1); // Player's turn after AI
+    expect(result.current.currentPlayer).toBe(1);
   });
 
   it("resets the game correctly", () => {

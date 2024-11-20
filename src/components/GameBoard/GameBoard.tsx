@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Grid, Paper, Typography } from "@mui/material";
 import { Ship } from "$types/Ship";
-import { isHit } from "$utils/shipUtils";
+import { isHit } from "$domain/ships";
 
 const BOARD_SIZE = 10;
 const ROW_LABELS = "ABCDEFGHIJ".split("");
@@ -108,6 +108,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
                 key={`cell-${rowIndex}-${colIndex}`}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
                 data-testid={`cell-${rowIndex}-${colIndex}`}
+                style={{ marginLeft: "1px" }}
               >
                 <Paper
                   elevation={1}

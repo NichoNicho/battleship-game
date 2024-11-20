@@ -6,7 +6,7 @@ import ScoreBoard from "$components/ScoreBoard";
 import { shipColors } from "$constants/gameConstants";
 import { useGameLogic } from "$hooks/useGameLogic";
 import { Ship } from "$types/Ship";
-import { transformToShipStatuses } from "$utils/shipUtils";
+import { transformToShipStatuses } from "$domain/ships";
 
 const PlayLocal: React.FC = () => {
   const { t } = useTranslation("playLocal");

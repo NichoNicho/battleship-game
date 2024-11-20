@@ -1,10 +1,10 @@
 module.exports = {
   preset: "ts-jest",
-  verbose: true,
   testEnvironment: "jest-environment-jsdom",
   moduleNameMapper: {
     "^\\$assets/(.*)$": "<rootDir>/src/assets/$1",
     "^\\$components/(.*)$": "<rootDir>/src/components/$1",
+    "^\\$domain/(.*)$": "<rootDir>/src/domain/$1",
     "^\\$constants/(.*)$": "<rootDir>/src/constants/$1",
     "^\\$hooks/(.*)$": "<rootDir>/src/hooks/$1",
     "^\\$store/(.*)$": "<rootDir>/src/store/$1",
